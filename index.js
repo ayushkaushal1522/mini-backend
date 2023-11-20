@@ -8,8 +8,9 @@ const morgan = require("morgan");
 const userRoute = require("./routes/users");
 const authRoute = require("./routes/auth");
 const postRoute = require("./routes/posts");
-const cors = require('cors')
 const path = require("path");
+const cors = require('cors');
+
 
 
 dotenv.config();
@@ -33,7 +34,10 @@ connecttomongo();
 app.use("/images", express.static(path.join(__dirname, "public/images")));
 
 
-app.use(cors())
+app.use(cors({
+  origin:"https://blue-pilot-frcad.pwskills.app:3000",
+  methods:["GET" , "POST" , "PUT" , "DELETE"] ,
+}))
 //middleware
 app.use(express.json());
 app.use(helmet());

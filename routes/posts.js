@@ -9,7 +9,7 @@ router.post("/", async (req, res) => {
       const savedPost = await newPost.save();
       res.status(200).json(savedPost);
     } catch (err) {
-      console.log("hii");
+      // console.log("hii");
       res.status(500).json(err);
     }
   });
@@ -31,10 +31,13 @@ router.post("/", async (req, res) => {
 
   //delete a post
 
-  router.delete("/:id", async (req, res) => {
+  router.put("/:id/delete", async (req, res) => {
     try {
+      console.log(req.params.id);
       const post = await Post.findById(req.params.id);
-      if (post.userId === req.body.userId) {
+      console.log(post);
+      console.log("Hello"+ req.body.userspost);
+      if (post.userId === req.body.userspost) {
         await post.deleteOne();
         res.status(200).json("the post has been deleted");
       } else {

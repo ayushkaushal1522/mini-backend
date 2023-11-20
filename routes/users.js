@@ -88,12 +88,12 @@ router.get("/" , async (req,res)=>{
 
 // follow a user
 router.put("/:id/follow",async (req,res)=>{
-    if(req.body.userId !== req.params.id){
+    if(req.body.usersId !== req.params.id){
         try{
             const user = await User.findById(req.params.id);
-            const currentuser = await User.findById(req.body.userId);
-            if(!user.followers.includes(req.body.userId)){
-                await user.updateOne({$push:{followers : req.body.userId}});
+            const currentuser = await User.findById(req.body.usersId);
+            if(!user.followers.includes(req.body.usersId)){
+                await user.updateOne({$push:{followers : req.body.usersId}});
                 await currentuser.updateOne({$push:{followings : req.params.id}});
                 res.status(200).json("user has been followed");
             }
@@ -113,12 +113,12 @@ router.put("/:id/follow",async (req,res)=>{
 
 //unfollow aa user
 router.put("/:id/unfollow",async (req,res)=>{
-    if(req.body.userId !== req.params.id){
+    if(req.body.usersId !== req.params.id){
         try{
             const user = await User.findById(req.params.id);
-            const currentuser = await User.findById(req.body.userId);
-            if(user.followers.includes(req.body.userId)){
-                await user.updateOne({$pull:{followers : req.body.userId}});
+            const currentuser = await User.findById(req.body.usersId);
+            if(user.followers.includes(req.body.usersId)){
+                await user.updateOne({$pull:{followers : req.body.usersId}});
                 await currentuser.updateOne({$pull:{followings : req.params.id}});
                 res.status(200).json("user has been unfollowed");
             }
@@ -135,6 +135,22 @@ router.put("/:id/unfollow",async (req,res)=>{
         res.status(403).json("You cannot unfollow yourself");
     }
 })
+
+//all users listing 
+router.get("/allusers", async (req, res) => {
+    try {
+      const users = await User.find();
+    //   console.log(user);
+      let usersList = [];
+      users.map((user) => {
+        const { _id, username, profilePicture } = user;
+        usersList.push({ _id, username, profilePicture });
+      });
+      res.status(200).json(usersList)
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  });
 
 
 module.exports =  router
