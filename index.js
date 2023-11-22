@@ -35,8 +35,8 @@ app.use("/images", express.static(path.join(__dirname, "public/images")));
 
 
 app.use(cors({
-  origin:"https://blue-pilot-frcad.pwskills.app:3000",
-  methods:["GET" , "POST" , "PUT" , "DELETE"] ,
+  origin:"https://blue-pilot-frcad.pwskills.app:3000"
+  // methods:["GET" , "POST" , "PUT" , "DELETE"] ,
 }))
 //middleware
 app.use(express.json());
@@ -70,5 +70,5 @@ app.use("/api/posts", postRoute);
 const PORT = process.env.PORT
 console.log(PORT)
 app.listen(8080, () => {
-  console.log("Backend server is running at port 8000");
+  console.log("Backend server is running at port 8080");
 });

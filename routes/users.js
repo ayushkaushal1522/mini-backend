@@ -4,21 +4,25 @@ const bcrypt = require("bcrypt")
 
 // update the user
 router.put("/:id",async (req,res)=>{
+    // console.log("suno mere baat bhai logon")
     if(req.body.userId === req.params.id || req.body.isAdmin){
-        if(req.body.password){
-            try{
-                const salt = await bcrypt.genSalt(10);
-                req.body.password = await bcrypt.hash(req.body.password , salt);
-            }
-            catch(error){
-                return res.status(500).json(error);
-            }
-        }
+        console.log("suno mere baat bhai logon chal ja yaar")
+        // if(req.body.password){
+        //     try{
+        //         const salt = await bcrypt.genSalt(10);
+        //         req.body.password = await bcrypt.hash(req.body.password , salt);
+        //     }
+        //     catch(error){
+        //         return res.status(500).json(error);
+        //     }
+        // }
         try{
             const user = await User.findByIdAndUpdate(req.params.id,{
                 $set :req.body,
             });
             res.status(200).json("Accout has been Updated successfully");
+            console.log("Accout has been Updated successfully")
+            console.log(req.body);
         }
         catch(error){
             return res.status(500).json(error);
@@ -30,12 +34,14 @@ router.put("/:id",async (req,res)=>{
 })
 
 //delete user
-router.delete("/:id",async (req,res)=>{
+router.put("/:id/delete",async (req,res)=>{
     if(req.body.userId === req.params.id || req.body.isAdmin){
         
         try{
+            // console.log("aaya");
             await User.findByIdAndDelete(req.params.id);
             res.status(200).json("Accout has been deleted successfully");
+            // console.log("delete hua");
         }
         catch(error){
             return res.status(500).json(error);
@@ -45,6 +51,8 @@ router.delete("/:id",async (req,res)=>{
         return res.status(403).json("You can delete only your account");
     }
 });
+
+
 // get all friends
 router.get("/friends/:userId", async (req, res) => {
     try {
