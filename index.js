@@ -10,6 +10,8 @@ const authRoute = require("./routes/auth");
 const postRoute = require("./routes/posts");
 const path = require("path");
 const cors = require('cors');
+const chatRoutes = require("./routes/chatRoutes")
+const messageRoutes = require("./routes/messageRoutes")
 
 
 
@@ -57,6 +59,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 app.post("/api/upload", upload.single("file"), (req, res) => {
   try {
+    console.log("data uploaded successfully");
     return res.status(200).json("File uploded successfully");
   } catch (error) {
     console.error(error);
@@ -67,6 +70,9 @@ app.post("/api/upload", upload.single("file"), (req, res) => {
 app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
 app.use("/api/posts", postRoute);
+app.use("api/chats", chatRoutes);
+app.use("api/chats", messageRoutes);
+
 const PORT = process.env.PORT
 console.log(PORT)
 app.listen(8080, () => {
